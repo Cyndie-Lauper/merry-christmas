@@ -597,11 +597,33 @@ function setupMusic() {
 
     bgm.volume = 0.5;
 
-    bgm.play().then(() => {
-        musicControl.classList.add('playing');
-    }).catch(err => {
-        console.log('Autoplay prevented. User must click play button.');
-        musicControl.classList.remove('playing');
+    // Try to play the music automatically
+    const tryAutoPlay = () => {
+        bgm.play().then(() => {
+            musicControl.classList.add('playing');
+        }).catch(err => {
+            console.log('Autoplay prevented. User must click play button.');
+            musicControl.classList.remove('playing');
+        });
+    };
+
+    tryAutoPlay();
+
+    setTimeout(tryAutoPlay, 500);
+
+    // Try to play when there is any user interaction
+    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'mousemove'];
+    const handleUserInteraction = () => {
+        if (bgm.paused) {
+            tryAutoPlay();
+        }
+        userInteractionEvents.forEach(event => {
+            document.removeEventListener(event, handleUserInteraction);
+        });
+    };
+
+    userInteractionEvents.forEach(event => {
+        document.addEventListener(event, handleUserInteraction, { once: true });
     });
 
     bgm.addEventListener('play', () => {
