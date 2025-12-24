@@ -397,6 +397,14 @@ function handleImageUpload(e) {
     const greeting = document.getElementById('greeting');
     greeting.classList.remove('ui-hidden');
 
+    const modeControls = document.getElementById('mode-controls');
+    const musicControlWrapper = document.getElementById('music-control-wrapper');
+    if (modeControls) modeControls.classList.remove('ui-hidden');
+    if (musicControlWrapper) musicControlWrapper.classList.remove('ui-hidden');
+
+    // Cập nhật trạng thái button "Show Controls"
+    updateShowControlsButton();
+
     imageQueue = [];
     currentImageIndex = 0;
 
@@ -437,6 +445,27 @@ function addPhotoWithQuote(imageData, quote) {
 }
 
 // ===== EVENT HANDLERS =====
+// Function to check if all controls are hidden and show/hide the "Show Controls" button
+function updateShowControlsButton() {
+    const uploadWrapper = document.querySelector('.upload-wrapper');
+    const modeControls = document.getElementById('mode-controls');
+    const musicControlWrapper = document.getElementById('music-control-wrapper');
+    const showControlsBtn = document.getElementById('show-controls-btn');
+
+    if (!showControlsBtn) return;
+
+    const allHidden =
+        (uploadWrapper && uploadWrapper.classList.contains('ui-hidden')) &&
+        (modeControls && modeControls.classList.contains('ui-hidden')) &&
+        (musicControlWrapper && musicControlWrapper.classList.contains('ui-hidden'));
+
+    if (allHidden) {
+        showControlsBtn.classList.remove('ui-hidden');
+    } else {
+        showControlsBtn.classList.add('ui-hidden');
+    }
+}
+
 function setupEvents() {
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -490,6 +519,22 @@ function setupEvents() {
         controlsOverlay.addEventListener('click', closeControls);
     }
 
+    // Show Controls button handler
+    const showControlsBtn = document.getElementById('show-controls-btn');
+    if (showControlsBtn) {
+        showControlsBtn.addEventListener('click', () => {
+            const uploadWrapper = document.querySelector('.upload-wrapper');
+            const modeControls = document.getElementById('mode-controls');
+            const musicControlWrapper = document.getElementById('music-control-wrapper');
+
+            if (uploadWrapper) uploadWrapper.classList.remove('ui-hidden');
+            if (modeControls) modeControls.classList.remove('ui-hidden');
+            if (musicControlWrapper) musicControlWrapper.classList.remove('ui-hidden');
+
+            updateShowControlsButton();
+        });
+    }
+
     // Close sidebar on Escape key
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && controlsHint.classList.contains('active')) {
@@ -503,6 +548,8 @@ function setupEvents() {
             if (uploadWrapper) uploadWrapper.classList.toggle('ui-hidden');
             if (modeControls) modeControls.classList.toggle('ui-hidden');
             if (musicControlWrapper) musicControlWrapper.classList.toggle('ui-hidden');
+
+            updateShowControlsButton();
         }
     });
 
