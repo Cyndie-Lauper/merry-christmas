@@ -460,16 +460,48 @@ function setupEvents() {
     renderer.domElement.addEventListener('click', onCanvasClick);
     renderer.domElement.addEventListener('dblclick', onCanvasDoubleClick);
 
+    // Controls sidebar toggle
+    const controlsToggle = document.getElementById('controls-toggle');
+    const controlsHint = document.getElementById('controls-hint');
+    const controlsOverlay = document.getElementById('controls-overlay');
+    const controlsClose = document.querySelector('.controls-close');
+
+    const toggleControls = () => {
+        const isActive = controlsHint.classList.toggle('active');
+        controlsToggle.setAttribute('aria-expanded', isActive);
+        controlsOverlay.classList.toggle('active', isActive);
+    };
+
+    const closeControls = () => {
+        controlsHint.classList.remove('active');
+        controlsToggle.setAttribute('aria-expanded', 'false');
+        controlsOverlay.classList.remove('active');
+    };
+
+    if (controlsToggle) {
+        controlsToggle.addEventListener('click', toggleControls);
+    }
+
+    if (controlsClose) {
+        controlsClose.addEventListener('click', closeControls);
+    }
+
+    if (controlsOverlay) {
+        controlsOverlay.addEventListener('click', closeControls);
+    }
+
+    // Close sidebar on Escape key
     window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && controlsHint.classList.contains('active')) {
+            closeControls();
+        }
         if (e.key.toLowerCase() === 'h') {
             const uploadWrapper = document.querySelector('.upload-wrapper');
             const modeControls = document.getElementById('mode-controls');
-            const controlsHint = document.querySelector('.controls-hint');
             const musicControlWrapper = document.getElementById('music-control-wrapper');
 
             if (uploadWrapper) uploadWrapper.classList.toggle('ui-hidden');
             if (modeControls) modeControls.classList.toggle('ui-hidden');
-            if (controlsHint) controlsHint.classList.toggle('ui-hidden');
             if (musicControlWrapper) musicControlWrapper.classList.toggle('ui-hidden');
         }
     });

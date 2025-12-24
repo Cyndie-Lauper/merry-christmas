@@ -318,42 +318,174 @@
      }
  }
 
- /* ===== CONTROLS HINT ===== */
- .controls-hint {
-     position: fixed;
-     bottom: var(--spacing-xl);
-     left: var(--spacing-xl);
-     color: var(--color-text-tertiary);
-     font-size: 10px;
-     letter-spacing: 2px;
-     text-transform: uppercase;
-     pointer-events: none;
-     z-index: 20;
-     line-height: 1.8;
-     background: rgba(15, 15, 15, 0.4);
-     backdrop-filter: blur(10px);
-     padding: var(--spacing-md) var(--spacing-lg);
-     border-radius: var(--radius-md);
-     border: 1px solid rgba(212, 175, 55, 0.1);
-     font-weight: 300;
- }
+/* ===== CONTROLS TOGGLE BUTTON ===== */
+.controls-toggle {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    left: var(--spacing-xl);
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(15, 15, 15, 0.9) 100%);
+    border: 1.5px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    color: var(--color-gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: var(--shadow-sm);
+    z-index: 21;
+    pointer-events: auto;
+}
 
- .controls-hint>div {
-     margin-bottom: var(--spacing-xs);
-     opacity: 0.8;
-     transition: opacity var(--transition-fast);
- }
+.controls-toggle:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border-color: var(--color-gold);
+    transform: scale(1.1);
+    box-shadow: 0 0 24px var(--color-gold-glow), var(--shadow-md);
+}
 
- .controls-hint>div:hover {
-     opacity: 1;
- }
+.controls-toggle:active {
+    transform: scale(0.95);
+}
 
- .controls-hint span {
-     display: block;
-     margin-top: var(--spacing-sm);
-     opacity: 0.6;
-     font-size: 9px;
- }
+.controls-toggle svg {
+    transition: transform var(--transition-base);
+}
+
+.controls-toggle[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+}
+
+/* ===== CONTROLS OVERLAY ===== */
+.controls-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 19;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+}
+
+.controls-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ===== CONTROLS HINT (SIDEBAR) ===== */
+.controls-hint {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    left: var(--spacing-xl);
+    color: var(--color-text-tertiary);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: auto;
+    z-index: 20;
+    line-height: 1.8;
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    padding: 0;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid rgba(212, 175, 55, 0.3);
+    font-weight: 300;
+    box-shadow: var(--shadow-lg);
+    max-width: 280px;
+    width: calc(100vw - var(--spacing-xl) * 2);
+    max-height: 70vh;
+    overflow: hidden;
+    transform: translateX(calc(-100% - var(--spacing-xl) - 20px));
+    opacity: 0;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.controls-hint.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.controls-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1.5px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    z-index: 1;
+}
+
+.controls-close:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 16px var(--color-gold-glow);
+}
+
+.controls-title {
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    color: var(--color-gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.controls-content {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+    max-height: calc(70vh - 80px);
+    overflow-y: auto;
+}
+
+.controls-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.controls-content::-webkit-scrollbar-track {
+    background: rgba(212, 175, 55, 0.05);
+    border-radius: var(--radius-full);
+}
+
+.controls-content::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: var(--radius-full);
+}
+
+.controls-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.5);
+}
+
+.controls-content > div {
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+    padding: var(--spacing-xs) 0;
+}
+
+.controls-content > div:last-child {
+    margin-bottom: 0;
+}
+
+.controls-content > div:hover {
+    opacity: 1;
+    color: var(--color-gold);
+}
 
  /* ===== CURSOR ===== */
  #canvas-container {
@@ -811,12 +943,45 @@
          min-width: 100px;
      }
 
-     .controls-hint {
-         bottom: var(--spacing-lg);
-         left: var(--spacing-lg);
-         font-size: 9px;
-         padding: var(--spacing-sm) var(--spacing-md);
-     }
+    .controls-toggle {
+        bottom: var(--spacing-lg);
+        left: var(--spacing-lg);
+        width: 40px;
+        height: 40px;
+    }
+
+    .controls-toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .controls-hint {
+        bottom: var(--spacing-lg);
+        left: var(--spacing-lg);
+        font-size: 9px;
+        max-width: calc(100vw - var(--spacing-lg) * 2);
+        transform: translateX(calc(-100% - var(--spacing-lg) - 20px));
+    }
+
+    .controls-hint.active {
+        transform: translateX(0);
+    }
+
+    .controls-title {
+        padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+        font-size: 10px;
+    }
+
+    .controls-content {
+        padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+    }
+
+    .controls-close {
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+        width: 28px;
+        height: 28px;
+    }
 
      h1 {
          font-size: clamp(24px, 8vw, 40px);
