@@ -933,11 +933,10 @@
          font-size: 8px;
      }
 
-     #mode-controls {
-         flex-direction: column;
-         bottom: var(--spacing-lg);
-         right: var(--spacing-lg);
-     }
+    #mode-controls {
+        bottom: var(--spacing-lg);
+        right: var(--spacing-lg);
+    }
 
      .mode-btn {
          min-width: 100px;
