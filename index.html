@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Merry Christmas">
+    <meta name="author" content="Tuan Minh">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="keywords" content="Christmas, Tree, Animation, 3D, WebGL">
+    <title>Merry Christmas</title>
+
+    <!-- Preconnect to Google Fonts for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap">
+
+    <link rel="stylesheet" href="global.css">
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Loading Christmas Tree</div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="ui-layer">
+        <h1 id="greeting" class="ui-hidden">Merry Christmas</h1>
+    </div>
+
+    <div class="upload-wrapper">
+        <label class="upload-btn" for="file-input" aria-label="Upload images">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Thêm ảnh
+            <input type="file" id="file-input" multiple accept="image/*" aria-label="Select image files">
+        </label>
+        <div class="hint-text">Nhấn 'H' để ẩn</div>
+    </div>
+
+    <nav id="mode-controls" aria-label="View mode controls">
+        <button class="mode-btn active" data-mode="TREE" aria-label="Tree view mode" aria-pressed="true">Cây</button>
+        <button class="mode-btn" data-mode="SCATTER" aria-label="Scatter view mode" aria-pressed="false">Phân tán</button>
+    </nav>
+
+    <aside class="controls-hint" aria-label="Controls instructions">
+        <div>Kéo chuột để xoay</div>
+        <div>Scroll để zoom</div>
+        <div>Click ảnh để focus</div>
+        <div>Double-click cây → phân tán</div>
+        <div>Double-click khi phân tán → focus</div>
+        <div>Click ảnh khi phân tán → xem quote</div>
+    </aside>
+
+    <div id="quote-modal" role="dialog" aria-labelledby="quote-modal-title" aria-modal="true">
+        <div class="quote-modal-content">
+            <h3 id="quote-modal-title">Thêm lời chúc Giáng Sinh</h3>
+            <textarea id="quote-input" class="quote-input" placeholder="Nhập lời chúc Giáng Sinh của bạn..." aria-label="Enter Christmas message"></textarea>
+            <div class="quote-modal-buttons">
+                <button class="quote-btn" id="quote-skip" aria-label="Skip adding message">Bỏ qua</button>
+                <button class="quote-btn primary" id="quote-submit" aria-label="Add message">Thêm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quote-display" role="dialog" aria-labelledby="quote-text" aria-modal="true">
+        <button class="quote-close" id="quote-close" aria-label="Close quote display">×</button>
+        <p class="quote-text" id="quote-text"></p>
+    </div>
+
+    <audio id="bgm" loop preload="metadata" aria-label="Background music">
+        <source src="bgm.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="music-control-wrapper" class="music-control-wrapper">
+        <button id="music-control" class="music-control" aria-label="Toggle music">
+            <svg id="music-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg id="music-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+        </button>
+        <div id="music-progress-container" class="music-progress-container">
+            <div id="music-progress-bar" class="music-progress-bar">
+                <div id="music-progress-fill" class="music-progress-fill"></div>
+                <div id="music-progress-handle" class="music-progress-handle"></div>
+            </div>
+            <div class="music-time">
+                <span id="music-current-time">0:00</span>
+                <span id="music-duration">0:00</span>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
